@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulação</title>
+  <script>function simulate(){
+	let input = (name)=> document.getElementsByName(name)[0];
+	let horas = input('horas').value;
+	let km = Number(input('km').value);
+	if(horas && km){
+		horas = horas.split(':').map(Number);
+		let horasDecimal = horas[0] + horas[1] / 60;
+		let tipo = input('tipo').value;
+		let custos = {
+			executivo: {hora: 13.33, km: 2.78},
+			van: {hora: 26.67, km: 3.97},
+			micro: {hora: 24.00, km: 4.93},
+			onibus: {hora: 30.00, km: 7.15},
+		}
+		let custo = custos[tipo].hora * horasDecimal + custos[tipo].km * km;
+		input('custo').value = custo.toLocaleString('pt-BR', {style: 'decimal', maximumFractionDigits: 2, minimumFractionDigits: 2});
+	} else {
+		input('custo').value = '--';
+	}
+}</script>
+<body onload="simulate()">
+<p><label for="tipo">Tipo do veículo:</label>
+<select name="tipo" onchange="simulate()">
+  <option value="executivo">Executivo 4 lugares</option>
+  <option value="van">Van 15 lugares</option>
+  <option value="micro">Micro-ônibus 23 lugares</option>
+  <option value="onibus">Ônibus 42 lugares</option>
+</select></p>
+<p><label for="horas">Horas disponível:</label><input type="time" name="horas" value="0" size="2" onchange="simulate()"></p>
+<p><label for="km">Quilômetros rodados:</label><input type="number" name="km" value="0" size="4" onchange="simulate()"></p>
+<p><label for="custo">Custo aproximado R$:</label><input type="text" name="custo" value="" size="7" disabled="true"></p>
+</body>
+</html>
